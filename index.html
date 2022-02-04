@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>weather</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header>
+
+    </header>
+
+    <section>
+
+    </section>
+
+    <script>
+        const section = document.querySelector('section');
+        const header = document.querySelector('header');
+        // 天気APIにアクセス 
+        const tokyo = 'https://weather.tsukumijima.net/api/forecast/city/130010'
+        fetch(tokyo)
+            .then(res => res.json())
+            .then(data => tenki(data))
+
+        // 結果を表示
+        function tenki(data) {
+            const myH1 = document.createElement('h1');
+            myH1.textContent = data['title']; //場所の記述
+            header.appendChild(myH1);
+
+            const weather = data['forecasts'] // 情報
+            const dataText = data['description'];
+
+            //その地域の天気情報
+            const myPara1 = document.createElement('p');
+            myPara1.textContent = dataText['bodyText'];
+            section.appendChild(myPara1);
+
+            // データを表示
+            for (let row of weather) {
+                console.log(row) 
+                
+                const detail = row['detail'];
+                const rain = row['chanceOfRain'];
+
+                const myArticle = document.createElement('article');
+                const myH2 = document.createElement('h2');
+                const myList = document.createElement('ul');
+                const item1 = document.createElement('li');
+                const item2 = document.createElement('li');
+                const item3 = document.createElement('li');
+                const item4 = document.createElement('li');
+                const item5 = document.createElement('li');
+                const item6 = document.createElement('li');
+                const item7 = document.createElement('li');
+
+
+
+
+
+                myH2.textContent = row['dateLabel'] + '(' + row['date'] + ')の三日間の天気';
+                item1.textContent = row['telop'];
+                item2.textContent = '風向き:' + detail['wind'];
+                item3.textContent = '風速:' + detail['wave'];
+                item4.textContent = '0時から6時の降水確率:' + rain['T00_06'];
+                item5.textContent = '6時から12時の降水確率:' + rain['T06_12'];
+                item6.textContent = '12時から18時の降水確率:' + rain['T12_18'];
+                item7.textContent = '18時から24時の降水確率:' + rain['T18_24'];
+
+
+
+                myList.appendChild(item1);
+                myList.appendChild(item2);
+                myList.appendChild(item3);
+                myList.appendChild(item4);
+                myList.appendChild(item5);
+                myList.appendChild(item6);
+                myList.appendChild(item7);
+
+
+
+                myArticle.appendChild(myH2);
+                myArticle.appendChild(myList);
+
+                section.appendChild(myArticle);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
